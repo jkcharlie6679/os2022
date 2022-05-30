@@ -12,9 +12,11 @@
 - Pre-conditioning
 
   ```bash
-  mount -t tmpfs -o size=3G tmpfs <mountpoint>
-  swapoff -a && swapon -a
-  echo 3 > /proc/sys/vm/drop_caches
+  mkdir /tmp/ramdisk # make the mountpoint
+  fallocate -l 1G /tmp/ramdisk/test.img # create the large file for duplicate
+  sudo mount -t tmpfs -o size=3G tmpfs /tmp/ramdisk
+  sudo swapoff -a && sudo swapon -a # clear swap
+  sudo sh -c "echo 3 > /proc/sys/vm/drop_caches" # clear pagecache, dentries, and inodes
   ```
 
 - Run program
@@ -22,5 +24,25 @@
 - Cleaning-up
 
   ```bash
-  diff source destination
+  diff <source> <destination>
+  ```
+
+## Help
+
+- Show mount point
+  
+  ```bash
+  cat /proc/mounts
+  ```
+
+- Calculate the time
+
+  ```bash
+  time <cmd>
+  ```
+
+- Unmount
+
+  ```bash
+  umount <dir>
   ```
